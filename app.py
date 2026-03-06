@@ -1,18 +1,22 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse
+from fastapi import FastAPI
+from pydantic import BaseModel
+from openai import OpenAI
 
 app = FastAPI()
+client = OpenAI()
 
-@app.get("/")
-def home():
-    return {"status": "running"}
+class Chat(BaseModel):
+    message: str
 
-@app.get("/zalo_verifierHjI6Byt507COiArMvAKUJpoWZrRGrbi0DZan.html")
-def verify():
-    return FileResponse("zalo_verifierHjI6Byt507COiArMvAKUJpoWZrRGrbi0DZan.html")
+@app.post("/chat")
+async def chat(data: Chat):
 
-@app.post("/webhook")
-async def webhook(request: Request):
-    data = await request.json()
-    print(data)
-    return {"status": "ok"}
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {"role":"system","content":"You are an AI assistant helping a Herbalife distributor manage team and create marketing content."},
+            {"role":"user","content":data.message}
+        ]
+    )
+
+    return {"reply": response.choices[0].message.content}
