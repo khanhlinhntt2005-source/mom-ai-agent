@@ -10,3 +10,12 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0].message.content)
+
+from fastapi.responses import FileResponse
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/zalo_verifierHjI6Byt507COiArMvAKUJpoWZrRGrbi0DZan.html")
+def verify():
+    return FileResponse("zalo_verifierHjI6Byt507COiArMvAKUJpoWZrRGrbi0DZan.html")
