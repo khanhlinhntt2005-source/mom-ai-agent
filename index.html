@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Mom AI Agent</h2>
+
+<input id="msg" placeholder="Nhắn gì đó...">
+<button onclick="send()">Send</button>
+
+<div id="chat"></div>
+
+<script>
+
+async function send(){
+
+const msg=document.getElementById("msg").value
+
+const r=await fetch("/chat",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:msg})
+})
+
+const data=await r.json()
+
+document.getElementById("chat").innerHTML +=
+"<p><b>Mom:</b> "+msg+"</p>"
+
+document.getElementById("chat").innerHTML +=
+"<p><b>AI:</b> "+data.reply+"</p>"
+
+}
+
+</script>
+
+</body>
+</html>
