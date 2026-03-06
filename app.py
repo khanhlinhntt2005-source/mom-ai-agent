@@ -20,3 +20,9 @@ async def chat(data: Chat):
     )
 
     return {"reply": response.choices[0].message.content}
+
+from fastapi.responses import FileResponse
+
+@app.get("/")
+def home():
+    return FileResponse("index.html")
